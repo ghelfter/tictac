@@ -15,6 +15,7 @@ OBJECTS = 	main.o \
 			game_ai.o \
 			image_util.o \
 			renderer.o \
+			text_render.o \
 			Vector2.o \
 			Vector3.o \
 			Vector4.o \
@@ -33,6 +34,7 @@ image_load.o: image_load.h
 image_util.o: image_util.h
 initialize.o: initialize.h renderer.h image_load.h
 renderer.o: renderer.h
+text_render.o: text_render.h
 Vector2.o: Vector2.h
 Vector3.o: Vector3.h
 Vector4.o: Vector4.h

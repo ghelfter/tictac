@@ -13,6 +13,7 @@
 
 #include "initialize.h"
 #include "renderer.h"
+#include "game_ai.h"
 
 unsigned int w = 512;
 unsigned int h = 512;
