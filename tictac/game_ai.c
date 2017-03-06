@@ -2,12 +2,24 @@
 /*  --------------     tictac      --------------  */
 /*  --------------    game_ai.c    --------------  */
 
+#include <stdlib.h>
+#include <math.h>
+
 #include "game_ai.h"
 
 #define N_COMBINATIONS 8
 
-/* Our board will be ordered row-major, so that it inlines the rows */
+#define WIN_WEIGHT 1.00f
+#define BLOCK_WIN_WEIGHT 0.90f
+#define CENTRE_WEIGHT 0.75f
 
+static float scenario_weights[] = {
+                               WIN_WEIGHT,
+                               BLOCK_WIN_WEIGHT,
+                               CENTRE_WEIGHT
+                             };
+
+/* Our board will be ordered row-major, so that it inlines the rows */
 /* What we'll do is cash the directions for our traversal */
 static int r1[3] = { 0, 1, 2 };
 static int r2[3] = { 3, 4, 5 };
@@ -27,6 +39,30 @@ static int current_player = 1; /* Start with player one */
 static int turn_change = 1;    /* We'll use a hack of flipping the sign to
                                 * alternate between adding and subtracting
                                 * one, so that we can remove branching */
+
+/* TODO Complete this function */
+char ai_make_play(char *board, int turn)
+{
+    float rval = rand();
+    int loc = 0;
+    int available = 0;
+    char move_table[N_COMBINATIONS];
+    float weight_table[N_COMBINATIONS];
+
+    /* Get a weighting of the different moves available */
+
+    /* Use a random value to determine the actual move */
+    for(loc = 0; loc < available; ++loc)
+    {
+        if(rval < weight_table[move_table[loc]])
+        {
+            break;
+        }
+    }
+
+    /* Return move */
+    return 0;
+}
 
 int end_turn()
 {

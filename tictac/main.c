@@ -82,7 +82,7 @@ int main(int argc, char **argv)
 
         /* Render to the screen */
         SDL_RenderPresent(renderer);
-        SDL_Delay(50);
+        SDL_Delay(25);
     }
 
     /* Perform any cleanup operations */
