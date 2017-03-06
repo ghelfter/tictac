@@ -62,7 +62,7 @@ struct vector4 vector4_scale3d(struct vector4 *v, double scale)
 struct vector4 vector4_scale_div(struct vector4 *v, double scale)
 {
     struct vector4 result;
-    double s_val = 1.0 / scale;
+    double s_val = 1.0 / scale; /* Create a scale value for optimization */
 
     result.x = v->x * s_val;
     result.y = v->y * s_val;

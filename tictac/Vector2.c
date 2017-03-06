@@ -43,7 +43,7 @@ struct vector2 vector2_scale(struct vector2 vec, double scale)
 struct vector2 vector2_scale_div(struct vector2 vec, double scale)
 {
     struct vector2 result;
-    double s_val = 1.0 / scale;
+    double s_val = 1.0 / scale; /* Create a scale value for optimization */
     result.x = vec.x * s_val;
     result.y = vec.y * s_val;
 

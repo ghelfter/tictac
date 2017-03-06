@@ -8,6 +8,7 @@
 
 extern const struct vector2 empty2;
 
+/* Define our two-dimensional vector structure */
 struct vector2
 {
     double x;

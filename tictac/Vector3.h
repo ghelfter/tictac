@@ -10,6 +10,7 @@
 
 extern const struct vector3 empty3;
 
+/* Define our three-dimensional vector structure */
 struct vector3
 {
     double x;

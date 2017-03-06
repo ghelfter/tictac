@@ -18,6 +18,8 @@
 unsigned int w = 512;
 unsigned int h = 512;
 
+struct vector2 dim;
+
 int main(int argc, char **argv)
 {
     char running = 1; /* variable to store the running state */
@@ -35,6 +37,9 @@ int main(int argc, char **argv)
             w = h = (unsigned int) atoi(argv[2]);
         }
     }
+
+    dim.x = w;
+    dim.y = h;
 
     /* If we were to build a more developed game, we would have a
      * configuration file to store any kind of parameters to make
