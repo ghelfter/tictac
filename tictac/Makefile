@@ -16,6 +16,7 @@ OBJECTS = 	main.o \
 			image_util.o \
 			renderer.o \
 			text_render.o \
+			input.o \
 			Vector2.o \
 			Vector3.o \
 			Vector4.o \
@@ -35,6 +36,7 @@ image_util.o: image_util.h
 initialize.o: initialize.h renderer.h image_load.h
 renderer.o: renderer.h
 text_render.o: text_render.h
+input.o: input.h
 Vector2.o: Vector2.h
 Vector3.o: Vector3.h
 Vector4.o: Vector4.h
@@ -44,6 +46,7 @@ Vector2.h: Util.h
 Vector3.h: Vector2.h
 Vector4.h: Util.h
 renderer.h: Vector2.h
+input.h: Vector2.h
 
 .PHONY: clean
 clean:
