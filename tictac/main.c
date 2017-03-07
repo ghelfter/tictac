@@ -14,11 +14,16 @@
 #include "initialize.h"
 #include "renderer.h"
 #include "game_ai.h"
+#include "input.h"
 
 unsigned int w = 512;
 unsigned int h = 512;
 
-struct vector2 dim;
+struct vector2 dim;       /* Store a vector of our dimensions */
+struct vector2 mpos_norm; /* Store our mouse position when clicked */
+struct vector2 mpos;
+int m_x = 0;
+int m_y = 0;
 
 int main(int argc, char **argv)
 {
@@ -67,6 +72,21 @@ int main(int argc, char **argv)
             {
                 running = 0;
                 break;
+            }
+            else if(event.type == SDL_MOUSEBUTTONDOWN)
+            {
+                /* Acquire mouse position */
+                SDL_GetMouseState(&m_x, &m_y);
+
+                mpos.x = (double) m_x;
+                mpos.y = (double) m_y;
+
+                /* Normalize mouse position */
+                get_mouse_norm(&mpos, &dim, &mpos_norm);
+            }
+            else if(event.type  == SDL_MOUSEBUTTONUP)
+            {
+                fprintf(stdout, "Cell: %d\n", get_cell(&mpos_norm));
             }
         }
     

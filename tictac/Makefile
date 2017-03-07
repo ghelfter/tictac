@@ -1,5 +1,4 @@
 # Galen Helfter
-# CPSC 4160
 # Makefile
 
 SHELL = /bin/sh
@@ -29,7 +28,7 @@ all:		$(PROGS)
 run:		$(OBJECTS) $(LIBS)
 			$(CC) $(LDFLAGS) -o $@ $(OBJECTS) $(LIBS)
 
-main.o: initialize.h renderer.h
+main.o: initialize.h renderer.h game_ai.h input.h
 game_ai.o: game_ai.h
 image_load.o: image_load.h
 image_util.o: image_util.h
