@@ -14,7 +14,7 @@ char ai_make_play(char *board, int turn);
 
 int end_turn();
 int get_current_player();
-void make_turn();
+void make_turn(char *game_board, int loc);
 
 /* This function will return 0 for no win, 1 for player 1, and 2 for player 2 */
 char game_won(char *board);

@@ -5,7 +5,6 @@
 /*
  * Basic tic-tac-toe game
  * */
-
 #include <SDL2/SDL.h>
 
 #include <stdio.h>
@@ -16,6 +15,8 @@
 #include "game_ai.h"
 #include "input.h"
 
+#define PLAYER 1
+
 unsigned int w = 512;
 unsigned int h = 512;
 
@@ -24,6 +25,7 @@ struct vector2 mpos_norm; /* Store our mouse position when clicked */
 struct vector2 mpos;
 int m_x = 0;
 int m_y = 0;
+char board[9] = {0};
 
 int main(int argc, char **argv)
 {
@@ -87,6 +89,12 @@ int main(int argc, char **argv)
             else if(event.type  == SDL_MOUSEBUTTONUP)
             {
                 fprintf(stdout, "Cell: %d\n", get_cell(&mpos_norm));
+                /* Check whose turn it is */
+                /* if(get_current_player() == PLAYER) */
+                /* { 
+                 *     make_turn(board, get_cell(&mpos_norm));
+                 * }
+                 */
             }
         }
     
