@@ -5,7 +5,7 @@
 #include "renderer.h"
 
 /* This will be referenced by outside files */
-SDL_Renderer *renderer = NULL;
+SDL_Renderer *tictac_renderer = NULL;
 SDL_Window *tictac_window = NULL;
 
 SDL_Texture* board_textures[3];
@@ -22,14 +22,16 @@ int initialize_renderer(int w, int h)
                             SDL_WINDOW_SHOWN);
 
     /* Create renderer */
-    renderer = SDL_CreateRenderer(tictac_window, -1, SDL_RENDERER_ACCELERATED);
+    tictac_renderer = SDL_CreateRenderer(tictac_window, -1,
+                                         SDL_RENDERER_ACCELERATED);
 
     return 0;
 }
 
 void cleanup_renderer()
 {
-    SDL_DestroyRenderer(renderer);
+    board_textures[0] = board_textures[1] = board_textures[2] = NULL;
+    SDL_DestroyRenderer(tictac_renderer);
     SDL_DestroyWindow(tictac_window);
 }
 
@@ -37,18 +39,37 @@ void render_board(const char *game_board)
 {
     int size = 9;
     int i = 0;
+    struct vector2 pos;
+    struct vector2 dim;
+    int w = 0, h = 0;
+
+    /* Acquire render size */
+    SDL_GetWindowSize(tictac_window, &w, &h);
+    double third_w = (double)w / 3.0;
+    double third_h = (double)h / 3.0;
+
     /* Go through our board and render all the textures */
     for(i = 0; i < size; ++i)
     {
+        /* Acquire our position */
+        pos.x = (i % 3) * third_w;
+        pos.y = (i / 3) * third_h;
+
+        dim.x = third_w;
+        dim.y = third_w;
+
         /* Store our textures simply */
+        render_texture(board_textures[game_board[i]], &pos, &dim);
     }
 }
 
 /* Give a texture and a 2-d coordinate for its position */
-bool render_texture(SDL_Texture *tex, struct vector2 *pos)
+bool render_texture(SDL_Texture *tex, struct vector2 *pos,
+                    struct vector2 *dim)
 {
+    SDL_Rect pos_rect;
     /*  Have not initialized the renderer yet  */
-    if(renderer == NULL)
+    if(tictac_renderer == NULL)
     {
         return false;
     }
@@ -59,8 +80,13 @@ bool render_texture(SDL_Texture *tex, struct vector2 *pos)
     }
 
     /* Construct our position rectangle */
+    pos_rect.x = (int) pos->x;
+    pos_rect.y = (int) pos->y;
 
-    /* Construct our dimension rectangle */
+    pos_rect.w = (int) dim->x;
+    pos_rect.h = (int) dim->y;
+
+    SDL_RenderCopy(tictac_renderer, tex, NULL, &pos_rect);
 
     return true;
 }

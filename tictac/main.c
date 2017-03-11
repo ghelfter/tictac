@@ -90,11 +90,12 @@ int main(int argc, char **argv)
             {
                 fprintf(stdout, "Cell: %d\n", get_cell(&mpos_norm));
                 /* Check whose turn it is */
-                /* if(get_current_player() == PLAYER) */
-                /* { 
-                 *     make_turn(board, get_cell(&mpos_norm));
-                 * }
-                 */
+                if(get_current_player() == PLAYER)
+                { 
+                    fprintf(stdout, "Player turn!\n");
+                    make_turn(board, get_cell(&mpos_norm));
+                    end_turn();
+                }
             }
         }
     
@@ -103,13 +104,14 @@ int main(int argc, char **argv)
         /* Run through the AI and update their state */
 
         /* Clear the renderer */
-        SDL_RenderClear(renderer);
+        SDL_RenderClear(tictac_renderer);
 
         /* Render images */
-        SDL_RenderCopy(renderer, board_tex, NULL, NULL);
+        SDL_RenderCopy(tictac_renderer, board_tex, NULL, NULL);
+        render_board(board);
 
         /* Render to the screen */
-        SDL_RenderPresent(renderer);
+        SDL_RenderPresent(tictac_renderer);
         SDL_Delay(25);
     }
 

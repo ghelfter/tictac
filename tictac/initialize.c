@@ -43,7 +43,12 @@ int tictac_init(int w, int h)
 
 void tictac_close()
 {
+    /* Destroy all of our textures */
     SDL_DestroyTexture(circle_tex);
+    SDL_DestroyTexture(cross_tex);
+    SDL_DestroyTexture(board_tex);
+
+    /* Exit SDL subsystems */
     IMG_Quit();
     SDL_Quit();
 }
@@ -57,8 +62,12 @@ void load_assets()
     const char *board = "./assets/board.png";
 
     /* Load our images in */
-    circle_tex = load_image(circle, renderer);
-    board_tex = load_image(board, renderer);
+    circle_tex = load_image(circle, tictac_renderer);
+    cross_tex = load_image(cross, tictac_renderer);
+    board_tex = load_image(board, tictac_renderer);
 
+    board_textures[0] = NULL;
+    board_textures[1] = cross_tex;
+    board_textures[2] = circle_tex;
     /* Make sure they were properly loaded */
 }
