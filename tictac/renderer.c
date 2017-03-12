@@ -59,7 +59,7 @@ void render_board(const char *game_board)
         dim.y = third_w;
 
         /* Store our textures simply */
-        render_texture(board_textures[game_board[i]], &pos, &dim);
+        render_texture(board_textures[(int)game_board[i]], &pos, &dim);
     }
 }
 

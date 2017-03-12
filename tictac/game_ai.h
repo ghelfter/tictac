@@ -12,6 +12,7 @@
 /* This function will return the place where the AI chooses to play */
 char ai_make_play(char *board, int turn);
 
+char is_placed(char *game_board, int loc);
 int end_turn();
 int get_current_player();
 void make_turn(char *game_board, int loc);

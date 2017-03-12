@@ -46,7 +46,7 @@ char ai_make_play(char *board, int turn)
     float rval = rand();
     int loc = 0;
     int available = 0;
-    char move_table[N_COMBINATIONS];
+    int move_table[N_COMBINATIONS];
     float weight_table[N_COMBINATIONS];
 
     /* Get a weighting of the different moves available */
@@ -75,6 +75,11 @@ int end_turn()
 int get_current_player()
 {
     return current_player;
+}
+
+char is_placed(char *game_board, int loc)
+{
+    return game_board[loc] == current_player;
 }
 
 void make_turn(char *game_board, int loc)

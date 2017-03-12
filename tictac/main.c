@@ -31,6 +31,8 @@ int main(int argc, char **argv)
 {
     char running = 1; /* variable to store the running state */
     char initialize = 0; /* Store the result of initialization */
+    char winner = 0;
+    int cell = 0;
 
     /* Store any event information */
     SDL_Event event;
@@ -64,6 +66,10 @@ int main(int argc, char **argv)
     /* Acquire any assets */
     load_assets();
 
+    /* Fake the setup of the board */
+    board[0] = 1; board[1] = 2;
+    board[4] = 1; board[2] = 2;
+
     /* Run through main game loop */
     while(running)
     {
@@ -92,9 +98,13 @@ int main(int argc, char **argv)
                 /* Check whose turn it is */
                 if(get_current_player() == PLAYER)
                 { 
+                    cell = get_cell(&mpos_norm);
                     fprintf(stdout, "Player turn!\n");
-                    make_turn(board, get_cell(&mpos_norm));
-                    end_turn();
+                    if(!is_placed(board, cell))
+                    {
+                        make_turn(board, cell);
+                        end_turn();
+                    }
                 }
             }
         }
@@ -102,6 +112,14 @@ int main(int argc, char **argv)
         /* Update the state and perform any game logic */
 
         /* Run through the AI and update their state */
+
+        /* Check for wins */
+        winner = game_won(board);
+        if(winner)
+        {
+            running = 0;
+            fprintf(stdout, "player %d won the game!\n", winner);
+        }
 
         /* Clear the renderer */
         SDL_RenderClear(tictac_renderer);
