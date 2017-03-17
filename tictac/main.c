@@ -14,6 +14,7 @@
 #include "renderer.h"
 #include "game_ai.h"
 #include "input.h"
+#include "text_render.h"
 
 #define PLAYER 1
 
@@ -23,9 +24,21 @@ unsigned int h = 512;
 struct vector2 dim;       /* Store a vector of our dimensions */
 struct vector2 mpos_norm; /* Store our mouse position when clicked */
 struct vector2 mpos;
+
+struct vector2 msg_pos;
+struct vector2 msg_dim;
+
 int m_x = 0;
 int m_y = 0;
 char board[9] = {0};
+
+/*
+ * This will contain our game state. The state is as follows:
+ *    0 - Game is initializing
+ *    1 - Game is currently running
+ *    2 - Game is won
+ */
+int game_state = 0;
 
 int main(int argc, char **argv)
 {
@@ -70,6 +83,14 @@ int main(int argc, char **argv)
     board[0] = 1; board[1] = 2;
     board[4] = 1; board[2] = 2;
 
+    game_state = 1;
+
+    msg_dim.x = dim.x / 2;
+    msg_dim.y = dim.y / 4;
+
+    msg_pos.x = dim.x / 4;
+    msg_pos.y = dim.y / 8 * 3;
+
     /* Run through main game loop */
     while(running)
     {
@@ -80,6 +101,19 @@ int main(int argc, char **argv)
             {
                 running = 0;
                 break;
+            }
+            else if(event.type == SDL_KEYDOWN)
+            {
+                fprintf(stdout, "Key pressed!\n");
+                if(event.key.keysym.sym == SDLK_q &&
+                   game_state == 2)
+                {
+                    running = 0;
+                    break;
+                }
+                /*
+                 * We can add some logic for restarting as well
+                 * */
             }
             else if(event.type == SDL_MOUSEBUTTONDOWN)
             {
@@ -96,7 +130,7 @@ int main(int argc, char **argv)
             {
                 fprintf(stdout, "Cell: %d\n", get_cell(&mpos_norm));
                 /* Check whose turn it is */
-                if(get_current_player() == PLAYER)
+                if(get_current_player() == PLAYER && game_state == 1)
                 { 
                     cell = get_cell(&mpos_norm);
                     fprintf(stdout, "Player turn!\n");
@@ -115,10 +149,9 @@ int main(int argc, char **argv)
 
         /* Check for wins */
         winner = game_won(board);
-        if(winner)
+        if(winner && game_state == 1)
         {
-            running = 0;
-            fprintf(stdout, "player %d won the game!\n", winner);
+            game_state = 2;
         }
 
         /* Clear the renderer */
@@ -127,6 +160,12 @@ int main(int argc, char **argv)
         /* Render images */
         SDL_RenderCopy(tictac_renderer, board_tex, NULL, NULL);
         render_board(board);
+
+        if(winner)
+        {
+            render_text(tictac_renderer, "Game has been won!",
+                        &msg_pos, &msg_dim);
+        }
 
         /* Render to the screen */
         SDL_RenderPresent(tictac_renderer);

@@ -5,13 +5,16 @@
 /* Acquire any SDL headers */
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
+#include <SDL2/SDL_ttf.h>
 
 /* Acquire any C standard library headers */
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "initialize.h"
 #include "renderer.h"
 #include "image_load.h"
+#include "text_render.h"
 
 /* Declare global variables to access our images */
 SDL_Texture *circle_tex = NULL;
@@ -29,6 +32,9 @@ int tictac_init(int w, int h)
 
     /* Initialize SDL_Image */
     flags_res = IMG_Init(flags);
+
+    /* Initialize SDL_ttf */
+    TTF_Init();
 
     result |= (flags_res ^ flags);
 
@@ -48,7 +54,11 @@ void tictac_close()
     SDL_DestroyTexture(cross_tex);
     SDL_DestroyTexture(board_tex);
 
+    /* Clean up our systems */
+    cleanup_text_render();
+
     /* Exit SDL subsystems */
+    TTF_Quit();
     IMG_Quit();
     SDL_Quit();
 }
