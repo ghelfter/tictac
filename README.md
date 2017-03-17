@@ -14,7 +14,7 @@
 
 * assets/circle.png
 
-* assets/cirlce.svg
+* assets/circle.svg
 
 * assets/cross.png
 
