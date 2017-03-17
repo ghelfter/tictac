@@ -8,6 +8,7 @@
 #include "game_ai.h"
 
 #define N_COMBINATIONS 8
+#define BOARD_SIZE 9
 
 #define WIN_WEIGHT 1.00f
 #define BLOCK_WIN_WEIGHT 0.90f
@@ -43,15 +44,36 @@ static int turn_change = 1;    /* We'll use a hack of flipping the sign to
 /* TODO Complete this function */
 char ai_make_play(char *board, int turn)
 {
-    float rval = rand();
+    /*float rval = rand();*/
     int loc = 0;
     int available = 0;
+    int res;
     int move_table[N_COMBINATIONS];
     float weight_table[N_COMBINATIONS];
+
+    /* Get all free spaces */
+    for(loc = 0; loc < BOARD_SIZE; ++loc)
+    {
+        if(*(board+loc) == 0)
+        {
+            move_table[available] = loc;
+            ++available;
+        }
+    }
+
+    /* Acquire a random number */
+    res = rand();
+
+    /* Mod by available, then return that */
+    res %= available;
+
+    /* Return move */
+    return move_table[res];
 
     /* Get a weighting of the different moves available */
 
     /* Use a random value to determine the actual move */
+    /*
     for(loc = 0; loc < available; ++loc)
     {
         if(rval < weight_table[move_table[loc]])
@@ -59,9 +81,8 @@ char ai_make_play(char *board, int turn)
             break;
         }
     }
+    */
 
-    /* Return move */
-    return 0;
 }
 
 int end_turn()
@@ -96,7 +117,8 @@ char game_won(char *game_board)
     {
         /* Check if a player has won */
         if(game_board[combinations[i][0]] == game_board[combinations[i][1]] &&
-           game_board[combinations[i][1]] == game_board[combinations[i][2]])
+           game_board[combinations[i][1]] == game_board[combinations[i][2]] &&
+           game_board[combinations[i][0]] > 0)
         {
             retval = game_board[combinations[i][0]];
             break;

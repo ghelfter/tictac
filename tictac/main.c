@@ -17,6 +17,7 @@
 #include "text_render.h"
 
 #define PLAYER 1
+#define AI     2
 
 unsigned int w = 512;
 unsigned int h = 512;
@@ -30,6 +31,7 @@ struct vector2 msg_dim;
 
 int m_x = 0;
 int m_y = 0;
+int player_went = 0;
 char board[9] = {0};
 
 /*
@@ -79,9 +81,6 @@ int main(int argc, char **argv)
     /* Acquire any assets */
     load_assets();
 
-    /* Fake the setup of the board */
-    board[0] = 1; board[1] = 2;
-    board[4] = 1; board[2] = 2;
 
     game_state = 1;
 
@@ -94,6 +93,8 @@ int main(int argc, char **argv)
     /* Run through main game loop */
     while(running)
     {
+        if(player_went)
+            player_went = 0;
         /* Acquire any input */
         while(SDL_PollEvent(&event) != 0)
         {
@@ -130,14 +131,15 @@ int main(int argc, char **argv)
             {
                 fprintf(stdout, "Cell: %d\n", get_cell(&mpos_norm));
                 /* Check whose turn it is */
-                if(get_current_player() == PLAYER && game_state == 1)
+                if(get_current_player() == PLAYER && game_state == 1
+                   && player_went == 0)
                 { 
                     cell = get_cell(&mpos_norm);
-                    fprintf(stdout, "Player turn!\n");
                     if(!is_placed(board, cell))
                     {
                         make_turn(board, cell);
                         end_turn();
+                        player_went = 1;
                     }
                 }
             }
@@ -146,6 +148,19 @@ int main(int argc, char **argv)
         /* Update the state and perform any game logic */
 
         /* Run through the AI and update their state */
+        if(get_current_player() == AI && game_state  == 1
+           && player_went == 0)
+        {
+            /* Have the AI make its turn */
+
+            /* Have an SDL Delay */
+            SDL_Delay(400);
+
+            /* AI places piece */
+            cell = ai_make_play(board, 0);
+            make_turn(board, cell);
+            end_turn();
+        }
 
         /* Check for wins */
         winner = game_won(board);
@@ -161,7 +176,7 @@ int main(int argc, char **argv)
         SDL_RenderCopy(tictac_renderer, board_tex, NULL, NULL);
         render_board(board);
 
-        if(winner)
+        if(game_state == 2)
         {
             render_text(tictac_renderer, "Game has been won!",
                         &msg_pos, &msg_dim);
